@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kuldevi Imitation Jewellery</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background-color: #111;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header .logo h1 {
+            font-size: 36px;
+            color: #FFD700;
+            text-transform: uppercase;
+        }
+
+        /* Navigation */
+        nav ul {
+            list-style: none;
+            padding: 10px;
+            background-color: #222;
+            text-align: center;
+            position: fixed;
+            top: 80px; /* Adjusted to account for fixed header */
+            width: 100%;
+            z-index: 999;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #444;
+        }
+
+        /* Main Content */
+        #mainContent {
+            padding: 40px;
+            text-align: center;
+            margin-top: 130px; /* Adjusted to avoid overlap with header and navigation */
+            min-height: 100vh; /* Ensure it has enough height */
+        }
+
+        #catalogContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px; /* Space at the bottom */
+        }
+
+        .catalog-item {
+            width: 200px;
+            margin: 10px;
+            border: 1px solid #fff;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #222;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .catalog-item img {
+            width: 100%;
+            height: 210px; /* Set a fixed height for the images */
+            object-fit: cover; /* Ensures images cover the frame without distortion */
+            border-radius: 5px;
+        }
+
+        .catalog-item .product-code {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #FFD700;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .catalog-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Full Screen Modal */
+        #imageModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #imageModal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        #closeModal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background-color: #FFD700;
+            color: #000;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #111;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            color: #FFD700;
+        }
+
+        footer a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        footer .phone-icon {
+            margin-left: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>Kuldevi</h1>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" id="homePageBtn">Home</a></li>
+            <li><a href="#" data-variety="necklaces">Necklaces</a></li>
+            <li><a href="#" data-variety="rings">Rings</a></li>
+            <li><a href="#" data-variety="earrings">Earrings</a></li>
+            <li><a href="#" data-variety="bangles">Bangles</a></li>
+        </ul>
+    </nav>
+
+    <section id="mainContent">
+        <h2>Welcome to Kuldevi Imitation Jewellery</h2>
+        <p>Browse our collections of high-quality imitation jewelry.</p>
+        <div id="catalogContainer">
+            <!-- Content will be dynamically loaded here -->
+        </div>
+    </section>
+
+    <footer>
+        <p>For inquiries, contact us at: 
+            <a href="tel:+917043986872">
+                <strong>7043986872</strong>
+                <span class="phone-icon">📞</span>
+            </a>
+        </p>
+    </footer>
+
+    <!-- Fullscreen Image Modal -->
+    <div id="imageModal">
+        <img id="modalImage" src="" alt="Full Screen Image">
+        <div id="closeModal">✖</div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const items = {
+                necklaces: [
+                    { src: 'photo/necklaces1.jpeg', code: 'NK001' },
+                    { src: 'photo/necklaces2.jpeg', code: 'NK002' },
+                    { src: 'photo/necklaces3.jpeg', code: 'NK003' },
+                    { src: 'photo/necklaces4.jpeg', code: 'NK004' },
+                    { src: 'photo/necklaces5.jpeg', code: 'NK005' },
+					{ src: 'photo/necklaces6.jpeg', code: 'NK006' },
+                    { src: 'photo/necklaces7.jpeg', code: 'NK007' },
+                    { src: 'photo/necklaces8.jpeg', code: 'NK008' },
+                    { src: 'photo/necklaces9.jpeg', code: 'NK009' },
+                    { src: 'photo/necklaces10.jpeg', code: 'NK0010' },
+					{ src: 'photo/necklaces11.jpeg', code: 'NK0011' },
+                    { src: 'photo/necklaces12.jpeg', code: 'NK0012' },
+                    { src: 'photo/necklaces13.jpeg', code: 'NK0013' },
+                    { src: 'photo/necklaces14.jpeg', code: 'NK0014' },
+                    { src: 'photo/necklaces15.jpeg', code: 'NK0015' },
+					{ src: 'photo/necklaces16.jpeg', code: 'NK0016' },
+                    { src: 'photo/necklaces17.jpeg', code: 'NK0017' },
+                    { src: 'photo/necklaces18.jpeg', code: 'NK0018' },
+                    { src: 'photo/necklaces19.jpeg', code: 'NK0019' },
+                    { src: 'photo/necklaces20.jpeg', code: 'NK0020' },
+                    // Add other items as needed
+                ],
+                rings: [
+                    { src: 'photo/ring1.jpeg', code: 'RG001' },
+                    { src: 'photo/ring2.jpeg', code: 'RG002' },
+                    { src: 'photo/ring3.jpeg', code: 'RG003' },
+                    { src: 'photo/ring4.jpeg', code: 'RG004' },
+					{ src: 'photo/ring5.jpeg', code: 'RG005' },
+                    { src: 'photo/ring6.jpeg', code: 'RG006' },
+                    { src: 'photo/ring7.jpeg', code: 'RG007' },
+                    { src: 'photo/ring8.jpeg', code: 'RG008' },
+					{ src: 'photo/ring9.jpeg', code: 'RG009' },
+                    { src: 'photo/ring10.jpeg', code: 'RG0010' },
+					{ src: 'photo/ring11.jpeg', code: 'RG0011' },
+                    { src: 'photo/ring12.jpeg', code: 'RG0012' },
+                    { src: 'photo/ring13.jpeg', code: 'RG0013' },
+                    { src: 'photo/ring14.jpeg', code: 'RG0014' },
+					{ src: 'photo/ring15.jpeg', code: 'RG0015' },
+                    { src: 'photo/ring16.jpeg', code: 'RG0016' },
+                    { src: 'photo/ring17.jpeg', code: 'RG0017' },
+                    { src: 'photo/ring18.jpeg', code: 'RG0018' },
+					{ src: 'photo/ring19.jpeg', code: 'RG0019' },
+                    { src: 'photo/ring20.jpeg', code: 'RG0020' },
+					{ src: 'photo/ring21.jpeg', code: 'RG0021' },
+                    { src: 'photo/ring22.jpeg', code: 'RG0022' },
+                    { src: 'photo/ring23.jpeg', code: 'RG0023' },
+                    // Add other items as needed
+                ],
+                earrings: [
+                    { src: 'photo/earring1.jpeg', code: 'ER001' },
+                    { src: 'photo/earring2.jpeg', code: 'ER002' },
+					{ src: 'photo/earring3.jpeg', code: 'ER003' },
+                    { src: 'photo/earring4.jpeg', code: 'ER004' },
+					{ src: 'photo/earring5.jpeg', code: 'ER005' },
+                    { src: 'photo/earring6.jpeg', code: 'ER006' },
+					{ src: 'photo/earring7.jpeg', code: 'ER007' },
+                    { src: 'photo/earring8.jpeg', code: 'ER008' },
+					{ src: 'photo/earring9.jpeg', code: 'ER009' },
+                    { src: 'photo/earring10.jpeg', code: 'ER0010' },
+                    // Add other items as needed
+                ],
+                bangles: [
+                    { src: 'photo/bangle1.jpeg', code: 'BG001' },
+                    { src: 'photo/bangle2.jpeg', code: 'BG002' },
+					{ src: 'photo/bangle3.jpeg', code: 'BG003' },
+                    { src: 'photo/bangle4.jpeg', code: 'BG004' },
+					{ src: 'photo/bangle5.jpeg', code: 'BG005' },
+                    { src: 'photo/bangle6.jpeg', code: 'BG006' },
+					{ src: 'photo/bangle7.jpeg', code: 'BG007' },
+                    { src: 'photo/bangle8.jpeg', code: 'BG008' },
+					{ src: 'photo/bangle9.jpeg', code: 'BG009' },
+                    { src: 'photo/bangle10.jpeg', code: 'BG0010' },
+					{ src: 'photo/bangle11.jpeg', code: 'BG0011' },
+                    { src: 'photo/bangle12.jpeg', code: 'BG0012' },
+                    // Add other items as needed
+                ]
+            };
+
+            // Function to display the items of a variety
+            function displayItems(variety) {
+                $('#catalogContainer').empty(); // Clear previous content
+                if (items[variety]) {
+                    items[variety].forEach(function(item) {
+                        $('#catalogContainer').append(`
+                            <div class="catalog-item">
+                                <img src="${item.src}" alt="${variety}">
+                                <div class="product-code">${item.code}</div>
+                            </div>
+                        `);
+                    });
+                }
+            }
+
+            // Default homepage content
+            $('#homePageBtn').click(function() {
+                $('#catalogContainer').empty();
+                $('#catalogContainer').append('<p>Welcome to Kuldevi Imitation Jewellery! Browse through our collections.</p>');
+            });
+
+            // Display items based on navigation selection
+            $('nav ul li a').click(function(e) {
+                e.preventDefault(); // Prevent default link behavior
+                const variety = $(this).data('variety');
+                if (variety) {
+                    displayItems(variety);
+                }
+            });
+
+            // Open image in full screen modal
+            $(document).on('click', '.catalog-item img', function() {
+                const imageSrc = $(this).attr('src');
+                $('#modalImage').attr('src', imageSrc);
+                $('#imageModal').fadeIn();
+            });
+
+            // Close the full-screen image modal
+            $('#closeModal').click(function() {
+                $('#imageModal').fadeOut();
+            });
+        });
+    </script>
+
+</body>
+</html>
